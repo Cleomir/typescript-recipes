@@ -1,0 +1,29 @@
+{
+  "name": "typescript-snippets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cleomir/typescript-snippets.git"
+  },
+  "keywords": [],
+  "author": "Cleomir Machado Gomes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cleomir/typescript-snippets/issues"
+  },
+  "homepage": "https://github.com/Cleomir/typescript-snippets#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.2",
+    "typescript-tslint-plugin": "^0.5.2",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.5",
+    "webpack-node-externals": "^1.7.2"
+  }
+}
