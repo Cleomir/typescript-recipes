@@ -11,6 +11,6 @@
     "target": "es5"
   },
   "typeRoots": ["./node_modules/@types"],
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["node_modules"]
 }
