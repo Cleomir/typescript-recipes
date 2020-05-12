@@ -4,7 +4,7 @@ import "./Request";
 
 const app: Application = express();
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
   // Get auth header value
   const bearerHeader: string | undefined = req.headers["authorization"];
   // check if bearer is undefined
@@ -16,26 +16,18 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     // call next middleware
     next();
   } else {
-    res.send(403);
+    return res.status(401).end();
   }
 };
 
-app.get("/api", (req, res) => {
-  res.json({
-    message: "Welcome to the API",
-  });
-});
-
 app.post("/api/posts", verifyToken, (req: Request, res: Response) => {
   jwt.verify(req.token, "secretkey", undefined, (err, authData) => {
-    if (err) {
-      res.sendStatus(403);
-    } else {
-      res.json({
-        message: "Post created.",
-        authData,
-      });
-    }
+    if (err) return res.sendStatus(401).end();
+
+    return res.status(201).json({
+      message: "Post created.",
+      authData,
+    });
   });
 });
 
@@ -46,9 +38,12 @@ app.post("/api/login", (req, res) => {
     username: "john doe",
     email: "johndoe@example.com",
   };
+
   // sign token
   jwt.sign(user, "secretkey", { expiresIn: "1h" }, (err, token) => {
-    res.json({
+    if (err) return res.status(500).end();
+
+    return res.json({
       token,
     });
   });
