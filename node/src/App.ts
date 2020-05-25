@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 
-import index from "../routes";
+import index from "./routes";
 
 /**
  * Express instance
