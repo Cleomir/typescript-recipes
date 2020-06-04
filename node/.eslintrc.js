@@ -8,4 +8,10 @@ module.exports = {
     "prettier/@typescript-eslint",
     "plugin:jest/recommended",
   ],
+  env: {
+    node: true,
+  },
+  rules: {
+    "@typescript-eslint/no-var-requires": 0,
+  },
 };
