@@ -1,0 +1,18 @@
+{
+  "name": "rabbitmq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Cleomir Machado Gomes",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.5.6"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.5.13"
+  }
+}
