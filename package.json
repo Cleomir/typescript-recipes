@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "jest --forceExit --detectOpenHandles",
-    "test:watch": "jest --watch"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cleomir/typescript-snippets.git"
@@ -20,13 +17,7 @@
   "homepage": "https://github.com/Cleomir/typescript-snippets#readme",
   "devDependencies": {
     "@types/node": "^14.0.11",
-    "nodemon": "^2.0.4",
-    "ts-loader": "^7.0.5",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.5",
-    "typescript-tslint-plugin": "^0.5.5",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-node-externals": "^1.7.2"
+    "typescript": "^3.9.5"
   }
 }
