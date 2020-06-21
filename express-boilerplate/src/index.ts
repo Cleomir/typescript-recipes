@@ -1,8 +1,13 @@
 import app from "./App";
+import { env, checkForUndefinedEnvVariables } from "./config/envVariables";
+import logger from "./helpers/logger";
 
-/**
- * Server port
- */
-const port = 3000;
+(async () => {
+  const serverPort: number = +env.SERVER_PORT;
 
-app.listen(port, () => console.log(`server listening on port ${port}`));
+  checkForUndefinedEnvVariables();
+  logger.info("Initialized env variables");
+  app.listen(env.SERVER_PORT, () =>
+    logger.info(`Server is listening on port ${serverPort}`)
+  );
+})();
