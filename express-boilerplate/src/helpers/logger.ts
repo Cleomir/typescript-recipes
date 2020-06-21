@@ -2,7 +2,7 @@ import winston from "winston";
 import { TransformableInfo } from "logform";
 import DailyRotateFile from "winston-daily-rotate-file";
 
-import { ENVIRONMENT } from "../config/env-variables";
+import { env } from "../config/envVariables";
 
 const { format } = winston;
 const logFormat = format.printf(
@@ -25,7 +25,7 @@ const logger = winston.createLogger({
 
 logger.exitOnError = false;
 
-if (ENVIRONMENT !== "production") {
+if (env.NODE_ENV !== "production") {
   logger.add(
     new winston.transports.Console({
       format: winston.format.simple(),
