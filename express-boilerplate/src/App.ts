@@ -1,23 +1,24 @@
 import express, { Application, Request, Response } from "express";
+import helmet from "helmet";
 
 import index from "./routes";
+import requestLogger from "./middleware/requestLogger";
 
 /**
  * Express instance
  */
 const app: Application = express();
-// request body parser
+// global middleware
 app.use(express.json());
+app.use(helmet());
+app.use(requestLogger());
+
 // mount root routes
 app.use("/", index);
 // 404 handler
 app.use((req: Request, res: Response) => {
-  const error: Error = new Error("not Found");
-
   return res.status(404).json({
-    message: error.message,
-    name: error.name,
-    status: 404,
+    message: "Page not Found",
   });
 });
 
