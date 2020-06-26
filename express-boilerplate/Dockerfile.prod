@@ -1,0 +1,10 @@
+FROM node:12-buster AS base
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build:prod
+
+FROM node:12-alpine 
+COPY --from=base /node_modules /node_modules
+COPY --from=base /dist/bundle.js /.env /
+CMD ["node", "bundle.js"]
