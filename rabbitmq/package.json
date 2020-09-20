@@ -10,8 +10,8 @@
   "author": "Cleomir Machado Gomes",
   "license": "MIT",
   "dependencies": {
-    "amqp-connection-manager": "^3.2.0",
-    "amqplib": "^0.5.6"
+    "amqp-connection-manager": "^3.2.1",
+    "amqplib": "^0.6.0"
   },
   "devDependencies": {
     "@types/amqp-connection-manager": "^2.0.10",
