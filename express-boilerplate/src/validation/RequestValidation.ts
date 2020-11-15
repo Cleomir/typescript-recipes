@@ -1,3 +1,3 @@
-import Joi, { ValidationResult } from "@hapi/joi";
+import Joi, { ValidationResult } from "joi";
 
 export default class RequestValidator {}
