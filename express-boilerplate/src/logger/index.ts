@@ -19,7 +19,7 @@ const logFormat = format.printf(
  */
 const rotator = new DailyRotateFile({
   datePattern: "YYYY-MM-DD",
-  dirname: "server/logs",
+  dirname: "logs",
   filename: "log-%DATE%.log",
   maxFiles: "30d",
   maxSize: "50m",
