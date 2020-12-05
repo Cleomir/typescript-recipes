@@ -3,6 +3,15 @@ import { v4 as uuidv4 } from "uuid";
 
 import logger from "../logger";
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    export interface Request {
+      id: string;
+    }
+  }
+}
+
 /**
  * Logs request properties and assigns a request id
  */
