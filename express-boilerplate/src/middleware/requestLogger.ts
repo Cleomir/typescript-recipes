@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
-import logger, { logObject } from "../logger";
+import logger from "../logger";
 
 /**
  * Logs request properties and assigns a request id
@@ -13,14 +13,16 @@ const requestLogger = () => {
     req.id = requestId ? requestId : uuidv4();
 
     // log request data
-    const { protocol, headers, method, body, originalUrl } = req;
-    logger.info(
-      `[NODE][${req.id}] Request URL: ${method} ${protocol}://${req.get(
-        "host"
-      )}${originalUrl}`
+    const { protocol, headers, method, body, originalUrl, connection } = req;
+    logger.log(
+      `IP: ${
+        connection.remoteAddress
+      } request URL: ${method} ${protocol}://${req.get("host")}${originalUrl}`,
+      "Request",
+      req.id
     );
-    logObject("info", `[NODE][${req.id}] Request headers:`, headers);
-    logObject("info", `[NODE][${req.id}] Request body:`, body);
+    logger.log("Request headers:", "Request", req.id, headers);
+    logger.log("Request body:", "Request", req.id, body);
 
     next();
   };
