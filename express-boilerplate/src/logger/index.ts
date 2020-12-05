@@ -1,68 +1,177 @@
-import winston from "winston";
+import winston, { format, createLogger, transports } from "winston";
 import { TransformableInfo } from "logform";
 import DailyRotateFile from "winston-daily-rotate-file";
 import { inspect } from "util";
 
 import { env } from "../config/envVariables";
 
-const { format } = winston;
-/**
- * Log lines format
- */
-const logFormat = format.printf(
-  (info: TransformableInfo) =>
-    `${info.timestamp}.${info.level.toUpperCase()}: ${info.message}`
-);
+export class Logger {
+  private readonly logger: winston.Logger;
+  constructor() {
+    this.logger = this.instantiateLogger();
+  }
 
-/**
- * Log file settings
- */
-const rotator = new DailyRotateFile({
-  datePattern: "YYYY-MM-DD",
-  dirname: "logs",
-  filename: "log-%DATE%.log",
-  maxFiles: "30d",
-  maxSize: "50m",
-});
+  instantiateLogger(): winston.Logger {
+    const logFormat = format.printf(
+      (info: TransformableInfo) =>
+        `${info.timestamp}.${info.level.toUpperCase()}: ${info.message}`
+    );
+    const rotator = new DailyRotateFile({
+      datePattern: "YYYY-MM-DD",
+      dirname: "logs",
+      filename: "log-%DATE%.log",
+      maxFiles: "30d",
+      maxSize: "50m",
+    });
+    const logger = createLogger({
+      exceptionHandlers: [rotator],
+      format: format.combine(format.timestamp(), logFormat),
+      transports: [rotator],
+    });
 
-/**
- * Logger instance
- */
-const logger = winston.createLogger({
-  exceptionHandlers: [rotator],
-  format: format.combine(format.timestamp(), logFormat),
-  transports: [rotator],
-});
+    logger.exitOnError = false;
 
-logger.exitOnError = false;
+    // Also send logs to console in Dev
+    if (env.NODE_ENV !== "production") {
+      logger.add(
+        new transports.Console({
+          format: format.simple(),
+        })
+      );
+    }
 
-// Also send logs to console in Dev
-if (env.NODE_ENV !== "production") {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  );
+    return logger;
+  }
+
+  /**
+   * Log information
+   * @param message log message
+   * @param context log location
+   * @param requestId request UUID
+   * @param obj object to be logged
+   */
+  log(
+    message: string,
+    context: string,
+    requestId = "",
+    obj?: Record<string, unknown>
+  ): void {
+    if (requestId) {
+      requestId = `[${requestId}]`;
+    }
+
+    if (obj) {
+      this.logger.info(
+        `[${context}]${requestId} ${message} ${inspect(obj, { depth: null })}`
+      );
+    } else {
+      this.logger.info(`[${context}]${requestId} ${message}`);
+    }
+  }
+
+  /**
+   * Log error
+   * @param message log message
+   * @param context log location
+   * @param requestId request UUID
+   * @param obj object to be logged
+   */
+  error(
+    message: string,
+    context: string,
+    requestId = "",
+    obj?: Record<string, unknown>
+  ): void {
+    if (requestId) {
+      requestId = `[${requestId}]`;
+    }
+
+    if (obj) {
+      this.logger.error(
+        `[${context}]${requestId} ${message} ${inspect(obj, { depth: null })}`
+      );
+    } else {
+      this.logger.error(`[${context}]${requestId} ${message}`);
+    }
+  }
+
+  /**
+   * Log warning
+   * @param message log message
+   * @param context log location
+   * @param requestId request UUID
+   * @param obj object to be logged
+   */
+  warn(
+    message: string,
+    context: string,
+    requestId?: string,
+    obj?: Record<string, unknown>
+  ): winston.Logger {
+    if (requestId) {
+      requestId = `[${requestId}]`;
+    }
+
+    if (obj) {
+      return this.logger.warn(
+        `[${context}]${requestId} ${message} ${inspect(obj, { depth: null })}`
+      );
+    }
+
+    return this.logger.warn(`[${context}][${requestId}] ${message}`);
+  }
+
+  /**
+   * Log debug information
+   * @param message log message
+   * @param context log location
+   * @param requestId request UUID
+   * @param obj object to be logged
+   */
+  debug(
+    message: string,
+    context: string,
+    requestId?: string,
+    obj?: Record<string, unknown>
+  ): winston.Logger {
+    if (requestId) {
+      requestId = `[${requestId}]`;
+    }
+
+    if (obj) {
+      return this.logger.debug(
+        `[${context}]${requestId} ${message} ${inspect(obj, { depth: null })}`
+      );
+    }
+
+    return this.logger.debug(`[${context}]${requestId} ${message}`);
+  }
+
+  /**
+   * Log verbose information
+   * @param message log message
+   * @param context log location
+   * @param requestId request UUID
+   * @param obj object to be logged
+   */
+  verbose(
+    message: string,
+    context: string,
+    requestId?: string,
+    obj?: Record<string, unknown>
+  ): winston.Logger {
+    if (requestId) {
+      requestId = `[${requestId}]`;
+    }
+
+    if (obj) {
+      return this.logger.verbose(
+        `[${context}]${requestId} ${message} ${inspect(obj, { depth: null })}`
+      );
+    }
+
+    return this.logger.verbose(`[${context}]${requestId} ${message}`);
+  }
 }
 
-/**
- * Logs and beautifies objects
- * @param level Log level
- * @param message Log message
- * @param object Object to be logged
- */
-export const logObject = (
-  level: "info" | "warn" | "error",
-  message: string,
-  object: Record<string, unknown>
-): void => {
-  if (level === "info") {
-    logger.info(`${message} ${inspect(object, { depth: null })}`);
-  } else if (level === "warn") {
-    logger.warn(`${message} ${inspect(object, { depth: null })}`);
-  } else {
-    logger.error(`${message} ${inspect(object, { depth: null })}`);
-  }
-};
-
-export default logger;
+export default new Logger();
