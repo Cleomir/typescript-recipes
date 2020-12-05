@@ -6,8 +6,8 @@ import logger from "./logger";
   const serverPort: number = +env.SERVER_PORT;
 
   checkForUndefinedEnvVariables();
-  logger.info("[NODE] Env variables initialized");
+  logger.log("Env variables initialized", "StartUp");
   app.listen(serverPort, () =>
-    logger.info(`[NODE] Started on port {${serverPort}}`)
+    logger.log(`Started on port {${serverPort}}`, "StartUp")
   );
 })();
