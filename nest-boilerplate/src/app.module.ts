@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
+import appEnvConfig from './app.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({ load: [appEnvConfig], isGlobal: true }),
+    LoggerModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
