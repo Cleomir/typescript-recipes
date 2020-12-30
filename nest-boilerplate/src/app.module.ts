@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { LoggerModule } from './logger/logger.module';
 import { LoggerService } from './logger/logger.service';
 import { RequestLoggerModule } from './request-logger/request-logger.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { RequestLoggerModule } from './request-logger/request-logger.module';
     MongooseModule.forRoot('mongodb://localhost:27017/db'),
     LoggerModule,
     RequestLoggerModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, LoggerService],
