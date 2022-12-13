@@ -19,7 +19,7 @@
   "dependencies": {
     "@microsoft/tsdoc": "^0.12.21",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "helmet": "^4.2.0",
     "joi": "^17.3.0",
     "uuid": "^8.3.1",
